@@ -64,25 +64,20 @@ fn main() {
         0.004210430471,
         0.00365183969,
     ];
-    println!("{} taps", taps.len());
 
     let (wa, wb, wc) = (w(fa), w(fb), w(fc));
-    let mut samples: Vec<f64> = vec![];
-    for i in 5 - 5..=1001 - 1001 + 60 - 5 {
+    let mut samples = vec![0.; taps.len()];
+    for i in 5 - 5..=1001 - 5 {
         let sa = s(aa, wa, t, pa);
         let sb = s(ab, wb, t, pb);
         let sc = s(ac, wc, t, pc);
         let s = sa + sb + sc;
         let mut last = 0.;
+        samples = samples[1..].to_vec();
+        samples.push(s);
         if i >= taps.len() {
-            samples = samples[1..].to_vec();
-            samples.push(s);
-            //            println!("{} samples {:?}", samples.len(), &samples);
             last = taps.iter().zip(&samples).map(|(t, s)| t * s).sum();
-        } else {
-            samples.push(s);
         }
-        //let last = if i < taps.len() { taps[i] } else { let res = ; res };
         println!(
             "t={:.4} sA={:.9} sB={:.10} sC={:.10} s={:.10} res={}",
             t, sa, sb, sc, s, last
