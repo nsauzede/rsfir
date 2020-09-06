@@ -75,11 +75,13 @@ fn main() {
         let s = sa + sb + sc;
         let mut last = 0.;
         if i >= taps.len() {
+            samples = samples[1..].to_vec();
+            samples.push(s);
             //            println!("{} samples {:?}", samples.len(), &samples);
             last = taps.iter().zip(&samples).map(|(t, s)| t * s).sum();
-            samples = samples[1..].to_vec();
+        } else {
+            samples.push(s);
         }
-        samples.push(s);
         //let last = if i < taps.len() { taps[i] } else { let res = ; res };
         println!(
             "t={:.4} sA={:.9} sB={:.10} sC={:.10} s={:.10} res={}",
